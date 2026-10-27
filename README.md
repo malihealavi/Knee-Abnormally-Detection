@@ -211,6 +211,77 @@ Three tools show *why* the model answers the way it does:
 
 This matches how radiologists read knee MRI, which is a good sign the model learns real patterns.
 
+### Detailed XAI results (58 true-label studies)
+
+All numbers are averages over the 58 studies that have real labels.
+
+#### 1. Plane deletion
+
+We hide one whole plane and measure the change of the model score (in logit units, a stretched version of probability).
+**Positive = the plane supports the target. Negative = the plane pulls the score down** (hiding it makes the score go up, so it may add noise).
+
+| Target | Axial | Coronal | Sagittal |
+|---|---|---|---|
+| ACL | 0.24 | **-0.48** | **0.41** |
+| MCL | 0.06 | -0.21 | -0.04 |
+| Medial Meniscus | 0.17 | **0.37** | -0.07 |
+| Lateral Meniscus | 0.20 | 0.10 | -0.22 |
+| Medial OA | 0.15 | **0.51** | -0.11 |
+| Lateral OA | 0.11 | **0.41** | -0.15 |
+| PF OA | -0.09 | 0.12 | -0.05 |
+| Effusion | 0.18 | 0.08 | 0.04 |
+| Synovitis | **0.40** | 0.05 | 0.00 |
+| Baker's | 0.25 | -0.13 | 0.09 |
+| Contusion | 0.10 | **-0.39** | **0.39** |
+| Fracture | **0.46** | **-0.37** | **0.44** |
+
+![Mean importance](assets/XAI/xai_out/MEAN_importance.png)
+
+**Main points**
+
+- **The view routing works.** The plane the model trusts most is the plane doctors use: Sagittal for ACL, Coronal for menisci and OA, Axial for Synovitis and Baker's cyst.
+- **The Coronal plane hurts some targets.** For ACL, Contusion and Fracture, the Coronal plane has a clearly negative effect (-0.37 to -0.48). The model seems to use it as noise there. Hiding it for these targets could help (needs a validation test).
+- **Fracture has the strongest signals.** Axial (0.46) and Sagittal (0.44) both help. Fracture is also the only target where all the effect sizes are large.
+- **Weak targets:** MCL has almost no helpful plane (all values near zero or negative), and PF OA is weak in every plane. Lateral Meniscus gets help from Axial only; Sagittal works against it (-0.22).
+- **Effusion is spread over all three planes** (small positive values in each), so no single plane is key.
+- Per-study check: ACL, Fracture and Contusion are supported by the Sagittal plane in 86-90% of studies, and Medial Meniscus by the Axial and Coronal planes in 81-88%. So the average is not driven by a few studies.
+
+#### 2. Slice deletion
+
+The three right-hand panels of the figure above show the effect of hiding one slice (index 0-15 out of the 16 middle slices).
+
+- Only a **few slices matter** for each target, others are close to zero. The slice pooler learned to focus.
+- **Coronal:** slices 3-5, 8 and 12 are the most useful for ligament, meniscus and OA targets.
+- **Sagittal:** slices 7-8 matter for ACL, Medial Meniscus and Fracture (the center of the knee, where the ACL and menisci are).
+- **Axial:** the first slices (0-1) are strongly positive for Effusion and Synovitis.
+- Many slices have a strong **negative** effect (for example Axial slice 6 for Effusion, Synovitis and Fracture). This means some slices push the score the wrong way, which is a sign of noise and a possible place to improve (for example, slice dropout during training).
+
+#### 3. Grad-CAM (where the model looks)
+
+Heat maps for the middle slice, averaged over 58 studies (bright = more important). Because they are averages of many different knees, the images look blurry, so only the main area should be read.
+
+![Axial](assets/XAI/xai_out/MEAN_cam_Axial.png)
+![Coronal](assets/XAI/xai_out/MEAN_cam_Coronal.png)
+![Sagittal](assets/XAI/xai_out/MEAN_cam_Sagittal.png)
+
+| Plane | Target | Where the model looks | Makes sense? |
+|---|---|---|---|
+| Sagittal | ACL, Medial Meniscus, Medial/Lateral OA | Center of the joint, between femur and tibia | ✅ Yes, this is where the ACL and menisci sit |
+| Sagittal | Contusion | Femur bone (upper part) | ✅ Yes, bone bruise is in the bone |
+| Coronal | Medial/Lateral Meniscus, OA | A horizontal band along the joint line | ✅ Yes, menisci and cartilage lie here |
+| Coronal | ACL, MCL | Left side of the joint and the center | ✅ Partly (side ligaments and center) |
+| Coronal | Contusion | Bone on the left side | ✅ Likely |
+| Axial | Effusion, Synovitis | Left and right sides of the joint | ✅ Yes, fluid and inflamed lining collect around the joint |
+| Axial | Baker's | Back (posterior) center | ✅ Yes, Baker's cyst is behind the knee |
+| Axial | PF OA | Back (posterior) center | ⚠️ No, the patella is at the front. Likely a weak or shortcut signal |
+
+#### 4. How to read this
+
+- **Good news:** for most targets (ACL, menisci, OA, Effusion, Synovitis, Baker's) the model looks at the right body part in the right plane, and the plane importance matches clinical practice.
+- **Weak spots:** MCL, PF OA and Medial Meniscus. On the 58 true-label studies their AUC is lowest (about 0.71, 0.84 and 0.59), and their XAI signals are weak or odd. Medial Meniscus is used a lot by the model (Coronal 0.37) but still ranks cases poorly, so "the model looks there" does not always mean "the model is right".
+- **Ideas to try next:** (1) ignore the Coronal plane for ACL, Contusion and Fracture, (2) add slice dropout in training, (3) use more series per plane for MCL and PF OA.
+- **Limits:** Grad-CAM uses only the middle slice, the maps are normalized per target, and 58 studies is a small sample. Deletion tests show what the model *uses*, not what is medically *true*.
+
 ---
 
 ## 📁 Repository Structure
