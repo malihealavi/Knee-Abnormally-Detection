@@ -20,8 +20,6 @@ from sklearn.model_selection import KFold
 import torch
 from torch import nn
 from sklearn.metrics import roc_auc_score
-from IPython.display import clear_output
-clear_output()
             
 from configs import get_config
 cfg = get_config()
@@ -75,7 +73,7 @@ def _cgroup_mem():
             pass
     return None, None
 
-def start_mem_watcher(path="/kaggle/working/mem_log.txt", every=30):
+def start_mem_watcher(path="./assets/log/mem_log.txt", every=30):
     def loop():
         main = psutil.Process(os.getpid())
         while True:

@@ -25,10 +25,8 @@ from torch.optim.lr_scheduler import  CosineAnnealingLR
 
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import train_test_split
-from IPython.display import clear_output
             
 import re
-clear_output()
 
   
 from dataset.KneeDataset import KneeDataset
@@ -54,7 +52,7 @@ class TrainerSingleFold():
                  device: str,
                  scaler: Optional[torch.amp.GradScaler] = None):  # FIX WARN 1
 
-        tmp_ds = KneeDataset(train_labeled=train_df.head(1), series_merged=LIGHT_DF,
+        tmp_ds = KneeDataset(train_labeled=train_df.head(1), series_merged=cfg.data.LIGHT_DF,
                      split='train', augmentation=False)
         num_meta = tmp_ds.num_meta
         print("num metadata features:", num_meta)
@@ -92,8 +90,8 @@ class TrainerSingleFold():
         self.GT_VAL   = cfg.data.GT_VAL.reset_index(drop=True) #58 Ground Truth samples
         
 
-        self.val_ds   = KneeDataset(train_labeled = self.val , series_merged = LIGHT_DF, split='train', augmentation=False)
-        self.gt_val_ds   = KneeDataset(train_labeled = self.GT_VAL , series_merged = LIGHT_DF, split='train', augmentation=False)
+        self.val_ds   = KneeDataset(train_labeled = self.val , series_merged = cfg.data.LIGHT_DF, split='train', augmentation=False)
+        self.gt_val_ds   = KneeDataset(train_labeled = self.GT_VAL , series_merged = cfg.data.LIGHT_DF, split='train', augmentation=False)
 
         self.criterion    = nn.BCEWithLogitsLoss()
         self.best_auc     = 0.0
@@ -173,7 +171,7 @@ class TrainerSingleFold():
         }
         torch.save(ckpt, path)
 
-    def load_checkpoint(self, path="/kaggle/input/rsna-knee-model/last_checkpoint.pth"):
+    def load_checkpoint(self, path="./assets/checkpoint/last_checkpoint.pth"):
         
         if not os.path.exists(path):
             print(f"No checkpoint found at {path}, starting fresh.")
@@ -213,7 +211,6 @@ class TrainerSingleFold():
           self.meta_val, self.meta_gt = predictions of that best model
           self.y_val_bin, self.y_gt_bin = binarized labels (N, 12)
         """
-        global LIGHT_DF , LABELS
         noise_cols = ['InstanceNumber', 'Laterality_Clean_BILATERAL', 'Laterality_Clean_LEFT',
                       'Laterality_Clean_RIGHT', 'Laterality_Clean_Unknown'] if drop_noise else []
         
@@ -227,7 +224,7 @@ class TrainerSingleFold():
                      'InstanceNumber', 'Rows', 'Columns', 'MagneticFieldStrength', 'FlipAngle', 'Fluid_Sensitive', 'Fat_Suppression']   
         
         # one row per study: the 3 planes side by side
-        wide = LIGHT_DF.pivot_table(index="StudyInstanceUID", columns="Anatomical_Plane",
+        wide = cfg.data.LIGHT_DF.pivot_table(index="StudyInstanceUID", columns="Anatomical_Plane",
                                     values=meta_cols, aggfunc="first")
         wide.columns = [f"{a}_{b}" for a, b in wide.columns]
 
@@ -235,7 +232,7 @@ class TrainerSingleFold():
             return wide.reindex(df_["StudyInstanceUID"].values).values.astype(float)
 
         def labels(df_):
-            return (df_[LABELS].values >= 0.5).astype(int)
+            return (df_[cfg.glob.LABELS].values >= 0.5).astype(int)
 
         # GT studies may also sit inside self.train -> remove them when predicting GT
         gt_ids = set(self.GT_VAL["StudyInstanceUID"])
@@ -269,7 +266,7 @@ class TrainerSingleFold():
                     out.append(np.nan)
             return out
 
-        n_lab = len(LABELS)
+        n_lab = len(cfg.glob.LABELS)
         self.meta_preds, val_auc, gt_auc = {}, {}, {}
         self.meta_models = {name: [] for name in factories}   # 12 fitted models per method
         self.meta_cols_used = list(wide.columns)              # exact feature order
@@ -290,7 +287,7 @@ class TrainerSingleFold():
         if verbose:
             print("metadata features:", len(wide.columns), "| train:", len(X_tr),
                   "| val:", len(X_val), "| GT:", len(X_gt))
-            for j, lab in enumerate(LABELS):
+            for j, lab in enumerate(cfg.glob.LABELS):
                 row = " | ".join(f"{n}: val {val_auc[n][j]:.3f} GT {gt_auc[n][j]:.3f}"
                                  for n in factories)
                 print(f"{lab:17s} {row}")
@@ -507,12 +504,12 @@ class TrainerSingleFold():
             stop_training = False
             self._unfreeze_slice_encoder(cycle)
             
-            self.val_ds = KneeDataset(train_labeled=self.val, series_merged=LIGHT_DF, split='train', augmentation=False)
+            self.val_ds = KneeDataset(train_labeled=self.val, series_merged=cfg.data.LIGHT_DF, split='train', augmentation=False)
             self.valid_loader = DataLoader(
                 dataset=self.val_ds, batch_size=cfg.train.BATCH_SIZE, shuffle=False,
                 num_workers=2, pin_memory=True, collate_fn=mri_collate_fn
             )
-            self.gt_val_ds = KneeDataset(train_labeled=self.GT_VAL, series_merged=LIGHT_DF, split='train', augmentation=False)
+            self.gt_val_ds = KneeDataset(train_labeled=self.GT_VAL, series_merged=cfg.data.LIGHT_DF, split='train', augmentation=False)
             self.gt_valid_loader = DataLoader(
                 dataset=self.gt_val_ds, batch_size=cfg.train.BATCH_SIZE, shuffle=False,
                 num_workers=2, pin_memory=True, collate_fn=mri_collate_fn
@@ -523,7 +520,7 @@ class TrainerSingleFold():
                 
                 self.current_epoch = epoch
                 chunk_df = chunks[i].reset_index(drop=True)
-                train_ds = KneeDataset(train_labeled=chunk_df, series_merged=LIGHT_DF,
+                train_ds = KneeDataset(train_labeled=chunk_df, series_merged=cfg.data.LIGHT_DF,
                                        split='train', augmentation=True)
                 self.train_loader = DataLoader(
                     dataset=train_ds, batch_size=cfg.train.BATCH_SIZE, shuffle=True,

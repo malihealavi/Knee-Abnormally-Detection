@@ -46,14 +46,16 @@ import timm
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
 from sklearn.exceptions import UndefinedMetricWarning
+from configs import get_config
+cfg = get_config()
 
 # ─────────────────────────────────────────────
 # Config — tune these for your GPU / time budget
 # ─────────────────────────────────────────────
 SERIES_ROOT    = "/kaggle/input/competitions/rsna-knee-abnormality-detection/train_series"
 BACKBONE_NAME  = "convnext_nano"
-BACKBONE_PATH  = "/kaggle/input/datasets/malihealavi/convnext-nano-pretrained-weights/convnext_nano_weights.pth"
-SSL_OUTPUT_DIR = "/kaggle/working/convnext_nano_knee_ssl"
+BACKBONE_PATH  = "./assets/checkpoint/convnext_nano_weights.pth"
+SSL_OUTPUT_DIR = "./assets/checkpoint/convnext_nano_knee_ssl"
 
 IMAGE_SIZE_GLOBAL = 256   # matches your main pipeline's IMAGE_SIZE
 IMAGE_SIZE_LOCAL  = 96
@@ -123,7 +125,7 @@ def build_series_index(root_dir):
         series_files.append(files)
     return series_files
 
-with open('/kaggle/input/knee-abnormally-dataset/series_files.pkl', "rb") as f:
+with open('./assets/data/series_files.pkl', "rb") as f:
     SERIES_FILES = pickle.load(f)
 print(len(SERIES_FILES))
 
@@ -426,11 +428,10 @@ def cancel_last_layer_grad(model, epoch):
 # ─────────────────────────────────────────────
 import ast
 def load_verified_probe_studies():
-    global TRUE_LABELS_DF, LIGHT_DF , SERIES_MERGED
     final_list = []
-    for _, row in TRUE_LABELS_DF.iterrows():
+    for _, row in cfg.data.TRUE_LABELS_DF.iterrows():
         study_id = row['StudyInstanceUID']
-        study_df = LIGHT_DF[LIGHT_DF['StudyInstanceUID'] == study_id]
+        study_df = cfg.data.LIGHT_DF[cfg.data.LIGHT_DF['StudyInstanceUID'] == study_id]
         if study_df.empty:
             print(f"  [probe] no files found for {study_id}, skipping")
             continue

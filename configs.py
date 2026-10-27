@@ -22,7 +22,7 @@ class DataPaths:
     TRAIN_LABELD_OLD :pd.DataFrame= pd.read_csv('./assets/data/labeld_df.csv')
     TRAIN_LABELD:pd.DataFrame = pd.read_csv('./assets/data/labeled_df_by_group.csv')
     TRAIN :pd.DataFrame = pd.read_csv('./assets/data/train.csv')
-    
+    LIGHT_DF :pd.DataFrame = pd.read_csv('./assets/data/LIGHT_DF.csv')
     TRAIN_LABELD [['Medial OA', 'Lateral OA']] = TRAIN_LABELD_OLD[['Medial OA', 'Lateral OA']]
     TRUE_LABELS_DF = TRAIN[TRAIN.notna().all(axis=1)]
     GT_VAL = TRAIN_LABELD.iloc[TRUE_LABELS_DF.index]
@@ -34,7 +34,7 @@ class DataPaths:
 class GlobalVar:
     NUM_SLICES: int =  16
     IMAGE_SIZE :int = 256
-    PLANES : list = ['Axial', 'Coronal', 'Sagittal']
+    PLANES = field(default_factory=lambda: ['Axial', 'Coronal', 'Sagittal'])
     LABELS= ['ACL', 'MCL', 'Medial Meniscus', 'Lateral Meniscus', 'Medial OA', 'Lateral OA', 
              'PF OA', 'Effusion', 'Synovitis', "Baker's", "Contusion", 'Fracture']
 
@@ -83,7 +83,7 @@ class Config:
     model: ModelConfig = field(default_factory=ModelConfig)
     train: TrainConfig = field(default_factory=TrainConfig)
     inference: InferenceConfig = field(default_factory=InferenceConfig)
-    glob : GlobalVar = field(default_factory=InferenceConfig)
+    glob : GlobalVar = field(default_factory=GlobalVar)
     device: str = field(default_factory=_get_default_device)
 
 def get_config() -> Config:

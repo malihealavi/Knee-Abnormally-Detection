@@ -23,8 +23,7 @@ class SliceEncoder(nn.Module):
         if bb == 'convnext_nano':
             backbone = timm.create_model("convnext_nano", pretrained=False, num_classes=0)
             loaded = torch.load(
-                '/kaggle/input/datasets/malihealavi/knee-pretrained-encoder/ssl_convnext_nano.pth',
-                #/kaggle/input/datasets/malihealavi/knee-pretrained-encoder/ssl_convnext_nano.pth
+                './assets/checkpoint/ssl_convnext_nano.pth',
                 map_location="cpu",
                 weights_only=False,
             )
@@ -46,17 +45,7 @@ class SliceEncoder(nn.Module):
             trainable_params = sum(p.numel() for p in backbone.parameters() if p.requires_grad)
             print(f"Trainable Parameters: {trainable_params:,}")
         elif bb == 'dinov2_small':
-            DINOV2_LOCAL_PATH = "/kaggle/input/datasets/malihealavi/knee-pretrained-encoder/ssl_dinov2_small"
-            # DINOV2_LOCAL_PATH = "/kaggle/input/rsna-knee-model/dinov2_knee_ssl_best_probe"
-            backbone = AutoModel.from_pretrained(DINOV2_LOCAL_PATH, local_files_only=True)
-            feature = backbone.config.hidden_size          # 768 for dinov2-base
-            self.proj = nn.Linear(feature, d)                # dino has no head to swap, so project manually
-            print(f'Selected Encoder: {bb}')
-            for p in backbone.parameters():
-                p.requires_grad = False
-
-        elif bb == 'dinov3_small':
-            DINOV2_LOCAL_PATH = "/kaggle/input/models/metaresearch/dinov2/pytorch/small/1"
+            DINOV2_LOCAL_PATH = "./assets/checkpoint/ssl_dinov2_small"
             backbone = AutoModel.from_pretrained(DINOV2_LOCAL_PATH, local_files_only=True)
             feature = backbone.config.hidden_size          # 768 for dinov2-base
             self.proj = nn.Linear(feature, d)                # dino has no head to swap, so project manually

@@ -71,13 +71,15 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import KFold
 from sklearn.metrics import roc_auc_score
 from sklearn.exceptions import UndefinedMetricWarning
+from configs import get_config
+cfg = get_config()
 
 # ─────────────────────────────────────────────
 # Config — tune these for your GPU / time budget
 # ─────────────────────────────────────────────
 SERIES_ROOT    = "/kaggle/input/competitions/rsna-knee-abnormality-detection/train_series"
 BACKBONE_PATH  = "/kaggle/input/models/metaresearch/dinov2/pytorch/small/1"  # your existing DINOv2-small checkpoint
-SSL_OUTPUT_DIR = "/kaggle/working/dinov2_knee_ssl"  # matches the path your SliceEncoder already expects
+SSL_OUTPUT_DIR = "./assets/checkpoint/dinov2_knee_ssl"  # matches the path your SliceEncoder already expects
 
 IMAGE_SIZE_GLOBAL = 256   # matches your main pipeline's IMAGE_SIZE
 IMAGE_SIZE_LOCAL  = 96
@@ -462,11 +464,10 @@ def cancel_last_layer_grad(model, epoch):
 # ─────────────────────────────────────────────
 import ast
 def load_verified_probe_studies():
-    global TRUE_LABELS_DF, LIGHT_DF
     final_list = []
-    for _, row in TRUE_LABELS_DF.iterrows():
+    for _, row in cfg.data.TRUE_LABELS_DF.iterrows():
         study_id = row['StudyInstanceUID']
-        study_df = LIGHT_DF[LIGHT_DF['StudyInstanceUID'] == study_id]
+        study_df = cfg.data.LIGHT_DF[cfg.data.LIGHT_DF['StudyInstanceUID'] == study_id]
         if study_df.empty:
             print(f"  [probe] no files found for {study_id}, skipping")
             continue
