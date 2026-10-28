@@ -1,0 +1,20 @@
+# Core
+torch>=2.3
+torchvision
+timm>=0.9
+transformers>=4.40
+monai==1.4.0
+numpy>=1.24,<2        # MONAI 1.4.0 expects NumPy 1.x
+pydicom>=2.4
+pandas
+scipy
+scikit-learn
+lightgbm
+matplotlib
+tqdm
+psutil
+Pillow
+
+# Only for Preprocessing/label_extraction.ipynb (Llama-3 labels)
+# accelerate
+# huggingface_hub
