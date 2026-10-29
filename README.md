@@ -175,7 +175,8 @@ flowchart TB
 - Uses all knee MRI slices from every series.
 - Only the last blocks are trained, with a small learning rate.
 - A **linear probe** on the 58 true-label studies checks if the features really improve (loss alone is not enough).
-|  | DINOv2-small | ConvNeXt-nano |
+
+| Config | DINOv2-small | ConvNeXt-nano |
 |---|---|---|
 | Epochs | 20 | 16 |
 |Macro AUC score before and after | 0.5639 ---> 0.5846 | 0.5692 ---> 0.5986 |
