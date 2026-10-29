@@ -352,10 +352,18 @@ python main.py
 
 | Item | Result |
 |---|---|
-| **Kaggle public leaderboard (final model)** | **0.81** macro AUC |
-| Early version (DINOv2 only) | 0.79 |
-| Report labels vs true labels (58 studies) | ≈ 0.85 |
-| Metadata model only | ≈ 0.64 (validation) |
+| Report labels vs true labels (58 studies) | macro AUC ≈ 0.849 |
+| Metadata model only | ≈ 0.64 (val) |
+| Public leaderboard (dinov2 model only) | ≈ 0.795 |
+| Private leaderboard (dinov2 model only) | ≈ 0.803 |
+| Public leaderboard (dinov2 model + weighted(0.2) meta ) | ≈ 0.786 |
+| Private leaderboard (dinov2 model + weighted (0.2) meta) | ≈ 0.794 |
+| Public leaderboard (dinov2 model + weighted(0.3) meta ) | ≈ 0.795 |
+| Private leaderboard (dinov2 model + weighted (0.3) meta) | ≈ 0.803 |
+| Public leaderboard (dual encoder) | ≈ 0.813 |
+| Private leaderboard (dual encoder) | ≈ 0.819 |
+| Public leaderboard (ensemble: dual encoder + dinov2 + conv_nano ) | ≈ 0.815 |
+| Private leaderboard (ensemble: dual encoder+ dinov2 + conv_nano) | ≈ 0.819 |
 
 **Per-target AUC on the 58 XAI studies** (labels from `probs.csv`, split at 0.5; macro ≈ 0.80):
 
