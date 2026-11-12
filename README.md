@@ -29,35 +29,24 @@ This project is based on the Kaggle competition [RSNA Knee Abnormally Detection]
   <tr>
     <td align="center">
       <img src="assets\EDA\output1.png" width="400"><br>
-      <sub>Grad-Cam output of a sample in 2-5D architecture </sub>
+      <sub> Mnufacture Distribution </sub>
     </td>
     <td align="center">
       <img src="assets\EDA\output2.png" width="400"><br>
-      <sub>Scan Type Importance on average of 40 Validation cases</sub>
+      <sub>Avcerage Probability of 12 targets by Patient Sex</sub>
     </td>
   </tr>
   <tr>
      <td align="center">
       <img src="assets\EDA\output3.png" width="400"><br>
-      <sub> mid-slice of 4 Scan Types of a Sample with MGMT = 1  </sub>
+      <sub> Distribution of targets  </sub>
     </td>
     <td align="center">
       <img src="./assets/XAI/xai_out/MEAN_importance.png" width="400"><br>
-      <sub>CatBoost SHAP Analysis</sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="assets\XAI\xai_out\MEAN_cam_Axial.png" width="400"><br>
-      <sub>CatBoost SHAP Analysis</sub>
-    </td>
-    <td align="center">
-      <img src="assets\XAI\xai_out\MEAN_cam_Coronal.png" width="400"><br>
-      <sub>XGBoost lime Analysis</sub>
+      <sub> Mean Slice Importance over 58 GT studies </sub>
     </td>
   </tr>
 </table>
-
 </div>
 
 
