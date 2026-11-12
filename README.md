@@ -2,6 +2,7 @@
 
 A deep learning pipeline that reads knee MRI studies and predicts **12 knee problems** at the same time. Built for the RSNA Knee Abnormality Detection Kaggle competition.
 
+This project is based on the Kaggle competition [RSNA Knee Abnormally Detection](https://www.kaggle.com/competitions/rsna-knee-abnormality-detection). The model outputs the probability that each of 12 knee problems is present (ACL, MCL, menisci, OA, effusion, etc.).
 **Metric:** macro ROC-AUC over the 12 targets.
 
 | Group | Targets |
