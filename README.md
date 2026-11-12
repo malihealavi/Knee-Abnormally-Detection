@@ -21,9 +21,9 @@ This project is based on the Kaggle competition [RSNA Knee Abnormally Detection]
 ![Monai](https://img.shields.io/badge/Monai-Augmentation-purple)
 ![scikit--learn](https://img.shields.io/badge/scikit--learn-Metrics-f7931e?logo=scikitlearn&logoColor=white)
 ![Pandas](https://img.shields.io/badge/Pandas-Data-150458?logo=pandas&logoColor=white)
-![DICOM](https://img.shields.io/badge/DICOM-Mammography-lightgrey)
-![Kaggle](https://img.shields.io/badge/Kaggle-RSNA%20Breast%20Cancer-20beff?logo=kaggle&logoColor=white)
-![Status](https://img.shields.io/badge/Status-In%20Progress-yellow)
+![DICOM](https://img.shields.io/badge/DICOM-MRI-lightgrey)
+![Kaggle](https://img.shields.io/badge/Kaggle-RSNA%20Knee%20Abnormally%20Detection-20beff?logo=kaggle&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Finished-yellow)
 
 <table>
   <tr>
