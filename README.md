@@ -13,6 +13,55 @@ This project is based on the Kaggle competition [RSNA Knee Abnormally Detection]
 | Fluid / soft tissue | Effusion, Synovitis, Baker's cyst |
 | Bone | Contusion, Fracture |
 
+
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue?logo=python&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-ee4c2c?logo=pytorch&logoColor=white)
+![dinov2](https://img.shields.io/badge/dino-v2-green)
+![convnext-small](https://img.shields.io/badge/convnext-small-blue)
+![Monai](https://img.shields.io/badge/Monai-Augmentation-purple)
+![scikit--learn](https://img.shields.io/badge/scikit--learn-Metrics-f7931e?logo=scikitlearn&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-Data-150458?logo=pandas&logoColor=white)
+![DICOM](https://img.shields.io/badge/DICOM-Mammography-lightgrey)
+![Kaggle](https://img.shields.io/badge/Kaggle-RSNA%20Breast%20Cancer-20beff?logo=kaggle&logoColor=white)
+![Status](https://img.shields.io/badge/Status-In%20Progress-yellow)
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="assets\EDA\output1.png" width="400"><br>
+      <sub>Grad-Cam output of a sample in 2-5D architecture </sub>
+    </td>
+    <td align="center">
+      <img src="assets\EDA\output2.png" width="400"><br>
+      <sub>Scan Type Importance on average of 40 Validation cases</sub>
+    </td>
+  </tr>
+  <tr>
+     <td align="center">
+      <img src="assets\EDA\output3.png" width="400"><br>
+      <sub> mid-slice of 4 Scan Types of a Sample with MGMT = 1  </sub>
+    </td>
+    <td align="center">
+      <img src="./assets/XAI/xai_out/MEAN_importance.png" width="400"><br>
+      <sub>CatBoost SHAP Analysis</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="assets\XAI\xai_out\MEAN_cam_Axial.png" width="400"><br>
+      <sub>CatBoost SHAP Analysis</sub>
+    </td>
+    <td align="center">
+      <img src="assets\XAI\xai_out\MEAN_cam_Coronal.png" width="400"><br>
+      <sub>XGBoost lime Analysis</sub>
+    </td>
+  </tr>
+</table>
+
+</div>
+
+
+
 ---
 
 ## 💡 The Main Challenge
