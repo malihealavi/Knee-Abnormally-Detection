@@ -415,10 +415,9 @@ The menisci and MCL are the hardest targets. For the MCL this fits the XAI resul
 ## 🔮 Future Work
 
 - Use all series per plane, not just one.
-- Higher resolution (e.g. 384 px) in later training stages.
-- Ensemble the dual-encoder model with single-encoder models.
-- Better rubric rules for hard targets (OA, Baker's cyst).
-- Improve the weak targets (menisci, MCL, PF OA) with higher resolution or targeted routing.
+- Crop ROI of each slide for better detail and larger reolution
+- Higher resolution (e.g. 384 px) training stages.
+- Use more sliecs (>16) in training
 
 ---
 
