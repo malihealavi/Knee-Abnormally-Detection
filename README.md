@@ -111,7 +111,7 @@ Result: macro AUC on the 58 true-label studies went from about **0.80 to 0.85** 
 
 
 | Target | All 12 at once | Target by target  | 1st place Labels (Astra Agent) |
-|---|---|---|---|---|
+|---|---|---|---|
 | ACL | 0.7886 | 0.9387 |  1.0000 |
 | MCL | 0.8345 | 0.9002 | 0.9909 |
 | Medial Meniscus | 0.7963 | 0.9008 | 0.9688 |
