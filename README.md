@@ -110,21 +110,21 @@ Result: macro AUC on the 58 true-label studies went from about **0.80 to 0.85** 
  **1st place Labels (Astra Agent):** They used a vision LLM using Open AI Astra agent where they give both images and report to the agents. Their approach achieved 0.9430 macro auc
 
 
-| Target | All 12 at once | Target by target | Change | 1st place Labels (Astra Agent) |
+| Target | All 12 at once | Target by target  | 1st place Labels (Astra Agent) |
 |---|---|---|---|---|
-| ACL | 0.7886 | **0.9387** | +0.150 | 1.0000 |
-| MCL | 0.8345 | **0.9002** | +0.066 | 0.9909 |
-| Medial Meniscus | 0.7963 | **0.9008** | +0.105 | 0.9688 |
-| Lateral Meniscus | 0.7814 | **0.8149** | +0.034 | 0.9292 |
-| Medial OA | 0.8953 | 0.8953 | 0.000 | 0.9713 |
-| Lateral OA | 0.8636 | 0.8636 | 0.000 | 0.8588 |
-| PF OA | 0.7477 | **0.7613** | +0.014 | 0.9324 |
-| Effusion | 0.7174 | **0.7422** | +0.025 | 0.9447 |
-| Synovitis | 0.6685 | **0.7336** | +0.065 | 0.8811 |
-| Baker's | 0.8967 | **0.9339** | +0.037 | 0.9819 |
-| Contusion | **0.8205** | 0.8131 | -0.007 | 0.9318 |
-| Fracture | 0.8299 | **0.8917** | +0.062 | 0.9250 |
-| **Macro AUC** | 0.8034 | **0.8491** | **+0.046** | 0.9430 |
+| ACL | 0.7886 | 0.9387 |  1.0000 |
+| MCL | 0.8345 | 0.9002 | 0.9909 |
+| Medial Meniscus | 0.7963 | 0.9008 | 0.9688 |
+| Lateral Meniscus | 0.7814 | 0.8149 | 0.9292 |
+| Medial OA | 0.8953 | 0.8953 | 0.9713 |
+| Lateral OA | 0.8636 | 0.8636 | 0.8588 |
+| PF OA | 0.7477 | 0.7613 | 0.9324 |
+| Effusion | 0.7174 | 0.7422 | 0.9447 |
+| Synovitis | 0.6685 | 0.7336 | 0.8811 |
+| Baker's | 0.8967 | 0.9339 | 0.9819 |
+| Contusion | 0.8205 | 0.8131 | 0.9318 |
+| Fracture | 0.8299 | 0.8917 | 0.9250 |
+| **Macro AUC** | 0.8034 | 0.8491 | 0.9430 |
 
 - when I Ten of the 12 targets improved. ACL and Medial Meniscus gained the most. Medial and Lateral OA are unchanged, and Contusion is almost the same.
 
